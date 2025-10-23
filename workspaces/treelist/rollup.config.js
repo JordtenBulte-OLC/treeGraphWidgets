@@ -28,7 +28,10 @@ export default async function (args) {
                             ],
                             plugins: [
                                 "@babel/plugin-transform-typescript",
-                                ["@babel/plugin-transform-react-jsx", { pragma: "createElement" }]
+                                ["@babel/plugin-transform-react-jsx", {
+                                    runtime: "automatic",
+                                    importSource: "react"
+                                }]
                             ]
                         },
                         {
@@ -38,7 +41,10 @@ export default async function (args) {
                         },
                         {
                             exclude: /node_modules/,
-                            plugins: [["@babel/plugin-transform-react-jsx", { pragma: "createElement" }]]
+                            plugins: [["@babel/plugin-transform-react-jsx", {
+                                runtime: "automatic",
+                                importSource: "react"
+                            }]]
                         }
                     ]
                 });
