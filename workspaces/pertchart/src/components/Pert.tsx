@@ -16,6 +16,8 @@ export interface PertProps {
     lineType: string;
     lineStyle: string;
     arrowWidth: number;
+    hSpacing: number | null;
+    vSpacing: number | null;
 }
 
 const Pert = (props: PertProps): ReactElement => {
@@ -44,6 +46,8 @@ const Pert = (props: PertProps): ReactElement => {
                 elementWidth={props.elementWidth}
                 elementHeight={props.elementHeight}
                 arrowWidth={props.arrowWidth}
+                hSpacing={props.hSpacing}
+                vSpacing={props.vSpacing}
             />
         </PanZoomScrollArea>
     );

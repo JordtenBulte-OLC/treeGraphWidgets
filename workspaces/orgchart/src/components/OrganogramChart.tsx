@@ -38,6 +38,8 @@ const OrganogramChart = (props: OrganogramChartProps): ReactElement => {
                 height={props.height}
                 arrowWidth={props.arrowWidth}
                 lineType={props.lineType}
+                hSpacing={null}
+                vSpacing={null}
             />
             <ScreenItemList
                 items={props.items}

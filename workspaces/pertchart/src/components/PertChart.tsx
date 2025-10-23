@@ -14,6 +14,8 @@ export interface PertChartProps {
     elementWidth: number;
     elementHeight: number;
     arrowWidth: number;
+    hSpacing: number | null;
+    vSpacing: number | null;
 }
 
 const propsAreEqual = (prevProps: PertChartProps, newProps: PertChartProps): boolean => {
@@ -30,7 +32,10 @@ const propsAreEqual = (prevProps: PertChartProps, newProps: PertChartProps): boo
     );
 };
 
+
 const PertChart = (props: PertChartProps): ReactElement => {
+    console.info({"hSpacing": props.hSpacing});
+
     return (
         <Fragment>
             <ScreenItemList
@@ -46,6 +51,8 @@ const PertChart = (props: PertChartProps): ReactElement => {
                 lineType={props.lineType}
                 lineStyle={props.lineStyle}
                 arrowWidth={props.arrowWidth}
+                hSpacing={props.hSpacing}
+                vSpacing={props.vSpacing}
             />
         </Fragment>
     );

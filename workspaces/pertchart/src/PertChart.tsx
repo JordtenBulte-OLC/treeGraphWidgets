@@ -71,6 +71,8 @@ export function PertChart(props: PertChartContainerProps): ReactElement {
                 lineType={props.lineType}
                 lineStyle={props.lineStyle}
                 arrowWidth={props.arrowWidth}
+                hSpacing={props.hSpacing}
+                vSpacing={props.vSpacing}
             />
         </div>
     );

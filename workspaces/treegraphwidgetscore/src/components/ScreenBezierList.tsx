@@ -10,6 +10,8 @@ export interface ScreenBezierListProps {
     arrowWidth: number;
     lineType: string;
     lineStyle: string;
+    hSpacing: number | null;
+    vSpacing: number | null;
 }
 
 const DEFAULT_LINE_STROKE = "";
@@ -51,7 +53,6 @@ const calculateSVGDimensions = (beziers: Bezier[], arrowWidth: number): Coordina
 const ScreenBezierList = (props: ScreenBezierListProps): ReactElement => {
     const { lineStroke, lineWidth, lineColor } = getLineProperties(props.lineStyle);
     const svgDimensions = calculateSVGDimensions(props.beziers, props.arrowWidth);
-
     const createBezierElements = props.beziers.map(bezier => (
         <ScreenBezier
             key={bezier.id}
@@ -60,6 +61,8 @@ const ScreenBezierList = (props: ScreenBezierListProps): ReactElement => {
             lineWidth={lineWidth}
             lineColor={lineColor}
             lineType={props.lineType}
+            hSpacing={props.hSpacing}
+            vSpacing={props.vSpacing}
         />
     ));
 

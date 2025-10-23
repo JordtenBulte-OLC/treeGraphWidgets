@@ -129,6 +129,8 @@ export function preview(props: PertChartPreviewProps): ReactElement {
                 arrowWidth={props.arrowWidth || ARROW_WIDTH}
                 elementHeight={props.elementHeight || ELEMENT_HEIGHT}
                 elementWidth={props.elementWidth || ELEMENT_WIDTH}
+                hSpacing={itemLayout.horizontalSpacing}
+                vSpacing={itemLayout.verticalSpacing}
             />
         </div>
     );
