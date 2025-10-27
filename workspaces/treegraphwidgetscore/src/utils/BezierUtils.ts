@@ -20,6 +20,19 @@ import { Item } from "../models/Item";
 const generateBeziersPert = (items: Item[], itemLayout: ItemLayout, lineLayout: LineLayout): Bezier[] => {
     const arrowCompensation = lineLayout.lineType === "bezier" ? lineLayout.arrowWidth : 0;
 
+    
+    const incomingConnections: Map<Item, Item[]> = new Map();
+
+    items.forEach(parent => {
+        parent.children?.forEach(child => {
+            if (!incomingConnections.has(child)) {
+                incomingConnections.set(child, []);
+            }
+            incomingConnections.get(child)!.push(parent);
+        });
+    });
+
+
     return items
         .filter(item => item.children)
         .flatMap(item => {
@@ -34,27 +47,52 @@ const generateBeziersPert = (items: Item[], itemLayout: ItemLayout, lineLayout: 
                     let controlStartY = 0;
                     let controlEndX = 0;
                     let controlEndY = 0;
+                    
+                    const childIndex = item.children!.indexOf(child);
+                    const totalChildren = item.children!.length;
+                    const parents = incomingConnections.get(child)!;
+                    const parentIndex = parents.indexOf(item);
+                    const totalParents = parents.length;
+                    console.debug({parentIndex});
+                    console.debug({totalParents});
+
 
                     if (item.x < child.x) {
                         startX += itemLayout.elementWidth;
-                        startY += itemLayout.elementHeight / 2;
+                        
+                        //startY += itemLayout.elementHeight / 2;
+                        startY += ((childIndex + 1) * itemLayout.elementHeight) / (totalChildren + 1);
+                        console.debug({childIndex});
+                        console.debug({totalChildren});
+                        console.debug({startY});                            
+                        
                         endX -= arrowCompensation;
-                        endY += itemLayout.elementHeight / 2;
+                        
+                        //endY += itemLayout.elementHeight / 2;
+                        endY += ((parentIndex + 1) * itemLayout.elementHeight) / (totalParents + 1);
+                        console.debug({endY});
+
                         controlStartX = startX + (lineLayout.bezierDelta * Math.abs(endX - startX)) / 100;
                         controlStartY = startY;
                         controlEndX = endX - (lineLayout.bezierDelta * Math.abs(endX - startX)) / 100;
                         controlEndY = endY;
                     } else if (item.x > child.x) {
-                        startY += itemLayout.elementHeight / 2;
+                        //startY += itemLayout.elementHeight / 2;
+                        startY += ((childIndex + 1) * itemLayout.elementHeight) / (totalChildren + 1)
+                        
                         endX += itemLayout.elementWidth + arrowCompensation;
-                        endY += itemLayout.elementHeight / 2;
+                        //endY += itemLayout.elementHeight / 2;
+                        endY += ((parentIndex + 1) * itemLayout.elementHeight) / (totalParents + 1);
+
                         controlStartX = startX - (lineLayout.bezierDelta * Math.abs(endX - startX)) / 100;
                         controlStartY = startY;
                         controlEndX = endX + (lineLayout.bezierDelta * Math.abs(endX - startX)) / 100;
                         controlEndY = endY;
                     } else if (item.y < child.y) {
                         startX += itemLayout.elementWidth / 2;
-                        startY += itemLayout.elementHeight;
+                        //startY += itemLayout.elementHeight;
+                        startY += ((childIndex + 1) * itemLayout.elementHeight) / (totalChildren + 1)
+                        
                         endX += itemLayout.elementWidth / 2;
                         endY -= arrowCompensation;
                         controlStartX = startX;
@@ -70,18 +108,21 @@ const generateBeziersPert = (items: Item[], itemLayout: ItemLayout, lineLayout: 
                         controlEndX = endX;
                         controlEndY = endY + (lineLayout.bezierDelta * Math.abs(endY - startY)) / 100;
                     }
+
                     return lineLayout.lineType === "bezier"
                         ? {
                               id: startX + "-" + startY + "-" + endX + "-" + endY + Math.round(Math.random() * 1000000),
                               start: { x: startX, y: startY },
                               end: { x: endX, y: endY },
                               controlStart: { x: controlStartX, y: controlStartY },
-                              controlEnd: { x: controlEndX, y: controlEndY }
+                              controlEnd: { x: controlEndX, y: controlEndY },
+                              description: item.description
                           }
                         : {
                               id: startX + "-" + startY + "-" + endX + "-" + endY + Math.round(Math.random() * 1000000),
                               start: { x: startX, y: startY },
-                              end: { x: endX, y: endY }
+                              end: { x: endX, y: endY },
+                              description: item.description
                           };
                 });
         });

@@ -81,7 +81,21 @@
                 <caption>Datasource</caption>
                 <description />
             </property>
-            <property key="parentEdge" type="attribute"  required="true" dataSource="dataMicroflowEdge">
+            <property key="bezierDescription" type="attribute" required="false" dataSource="dataMicroflowEdge">
+                <caption>Association description</caption>
+                <description>This field will be displayed on the bezier</description>
+                <attributeTypes>
+                    <attributeType name="String"/>
+                    <attributeType name="Boolean"/>
+                    <attributeType name="Integer"/>
+                    <attributeType name="Long"/>
+                    <attributeType name="Decimal"/>
+                    <attributeType name="DateTime"/>
+                    <attributeType name="Enum"/>
+                    <attributeType name="AutoNumber"/>
+                </attributeTypes>
+            </property>
+            <property key="parentEdge" type="attribute" required="true" dataSource="dataMicroflowEdge">
                 <caption>Parent association</caption>
                 <description>Association to the parent node (link to unique descriptor)</description>
                 <attributeTypes>

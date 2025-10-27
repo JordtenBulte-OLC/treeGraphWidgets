@@ -14,20 +14,22 @@ export default abstract class GraphItemsFactory extends ItemsFactory {
         edgeObjectItems: ObjectItem[],
         edgeParent: ListAttributeValue,
         edgeChild: ListAttributeValue,
+        bezierDescription?: ListAttributeValue
     ) {
         super();
 
         this.items = !objectItems
-        ? []
-        : this.createItems(
-            objectItems,
-            selfAttribute,
-            hasFocusAttribute,
-            boxContent,
-            columnAttribute);
+            ? []
+            : this.createItems(
+                objectItems,
+                selfAttribute,
+                hasFocusAttribute,
+                boxContent,
+                columnAttribute
+            );
         this.edges = !edgeObjectItems
-            ? [] 
-            : this.createEdges(edgeObjectItems, edgeParent, edgeChild);
+            ? []
+            : this.createEdges(edgeObjectItems, edgeParent, edgeChild, bezierDescription, this.items);
     }
 
     abstract override setXValues(currentItems: Item[], itemLayout: ItemLayout): Item[];
@@ -44,6 +46,7 @@ export default abstract class GraphItemsFactory extends ItemsFactory {
         if (!items) {
             throw Error("No items found");
         }
+
         return items.map(item => {
             return {
                 id: selfAttribute.get(item).displayValue,
@@ -58,7 +61,7 @@ export default abstract class GraphItemsFactory extends ItemsFactory {
                 x: 0,
                 isRoot: !parent,
                 hasFocus: hasFocusAttribute.get(item).value === true,
-                showsChildren: undefined
+                showsChildren: undefined,
             };
         }) as Item[];
     }
@@ -66,7 +69,9 @@ export default abstract class GraphItemsFactory extends ItemsFactory {
     createEdges(
         edgeObjectItems: ObjectItem[] | undefined,
         parentAtrribute: ListAttributeValue | undefined,
-        childAtrribute: ListAttributeValue | undefined
+        childAtrribute: ListAttributeValue | undefined,
+        bezierDescription?: ListAttributeValue,
+        items?: Item[]
     ): Edge[] {
         if (!edgeObjectItems || !parentAtrribute || !childAtrribute) {
             return [];
@@ -74,9 +79,19 @@ export default abstract class GraphItemsFactory extends ItemsFactory {
 
         return edgeObjectItems
             .map(edge => {
+                        
+                const parentId = parentAtrribute.get(edge).displayValue;
+                const childId = childAtrribute.get(edge).displayValue;
+
+                const parentItem = items?.find(item => item.self === parentId);
+                const childItem = items?.find(item => item.self === childId);
+
                 return {
                     parent: parentAtrribute.get(edge).displayValue,
-                    child: childAtrribute.get(edge).displayValue
+                    child: childAtrribute.get(edge).displayValue,
+                    description: bezierDescription?.get(edge).value?.toString(),
+                    parentItem,
+                    childItem
                 };
             })
             .filter(edge => !!edge.child && !!edge.parent);
@@ -85,6 +100,7 @@ export default abstract class GraphItemsFactory extends ItemsFactory {
     override setChildren(): Item[] {
         const itemsWithChildren = [...this.items];
         this.edges.forEach(edge => {
+            console.info({ edge });
             const parentItem = this.items.find(item => item.self === edge.parent);
             if (!parentItem) {
                 return;
@@ -96,14 +112,26 @@ export default abstract class GraphItemsFactory extends ItemsFactory {
             }
 
             const currentChildren = parentItem.children;
+            console.info({currentChildren});
+
+            // currentChildren?.forEach(child => child.description = edge.description);
+            // childItem.description = edge.description;
+
+
             if (currentChildren) {
                 parentItem.children = [...currentChildren, childItem];
             } else {
                 parentItem.children = [childItem];
             }
 
+
             childItem.parent = parentItem.self;
+            console.info({edge});
+            console.info({childItem});
+            console.info({parentItem});
+            childItem.description = edge.description;
         });
+
         return itemsWithChildren;
     };
 }

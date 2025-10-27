@@ -34,8 +34,6 @@ const propsAreEqual = (prevProps: PertChartProps, newProps: PertChartProps): boo
 
 
 const PertChart = (props: PertChartProps): ReactElement => {
-    console.info({"hSpacing": props.hSpacing});
-
     return (
         <Fragment>
             <ScreenItemList

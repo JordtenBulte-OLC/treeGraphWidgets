@@ -45,7 +45,8 @@ export function PertChart(props: PertChartContainerProps): ReactElement {
         dataMicroflowEdge: props.dataMicroflowEdge,
         parentEdge: props.parentEdge,
         childEdge: props.childEdge,
-        column: props.column
+        column: props.column,
+        bezierDescription: props.bezierDescription
     });
 
     useEffect(() => {

@@ -22,10 +22,13 @@ export const createItems = (
     parentEdge?: ListAttributeValue<string>,
     childEdge?: ListAttributeValue<string>,
     showsChildren?: ListAttributeValue<boolean>,
-    column?: ListAttributeValue<Big>
+    column?: ListAttributeValue<Big>,
+    bezierDescription?: ListAttributeValue<string | boolean | Big | Date>
 ): Item[] => {
 
     let itemsFactory: ItemsFactory;
+    console.info({ dataMicroflowEdge });
+    console.info({ bezierDescription });
     switch (widgetType) {
         case "organogram":
             itemsFactory = new OrgChartItemsFactory(
@@ -46,7 +49,8 @@ export const createItems = (
                 column!,
                 dataMicroflowEdge?.items!,
                 parentEdge!,
-                childEdge!
+                childEdge!,
+                bezierDescription
             );
             break;
         case "tree":
@@ -80,6 +84,10 @@ export const createBeziers = (
     if (widgetType === "tree") {
         return [];
     }
+
+    console.info({ items });
+    console.info({ itemLayout });
+    console.info({ lineLayout });
 
     return generateBeziers(items, itemLayout, lineLayout, widgetType);
 };

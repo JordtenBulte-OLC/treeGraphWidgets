@@ -6,4 +6,5 @@ export interface Bezier {
     end: Coordinate;
     controlStart?: Coordinate;
     controlEnd?: Coordinate;
+    description?: string | boolean | Big | Date;
 }

@@ -14,4 +14,5 @@ export interface Item {
     isRoot: boolean;
     hasFocus: boolean;
     showsChildren?: boolean;
+    description?: string | boolean | Big | Date;    
 }

@@ -30,6 +30,8 @@ const ScreenBezier = (props: ScreenPathProps): ReactElement => {
         bezierPath = `M ${start.x}, ${start.y} L ${end.x}, ${end.y}`;
     }
 
+    console.info({"bezier": props.bezier});
+
     return (
         <Fragment>
             <path
@@ -41,6 +43,7 @@ const ScreenBezier = (props: ScreenPathProps): ReactElement => {
                 stroke={props.lineColor}
                 strokeLinecap="round"
             />
+            <text x={end.x} y={end.y} dx={-48} dy={-8}>{props.bezier.description?.toString()}</text>
         </Fragment>
     );
 };

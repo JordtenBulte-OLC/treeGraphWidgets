@@ -24,6 +24,7 @@ const useScreenElements = (props: {
     parentEdge?: ListAttributeValue<string>;
     childEdge?: ListAttributeValue<string>;
     column?: ListAttributeValue<Big>;
+    bezierDescription?: ListAttributeValue<string | boolean | Big | Date>;
 }): {
     items: Item[];
     beziers: Bezier[];
@@ -54,7 +55,8 @@ const useScreenElements = (props: {
                 props.parentEdge,
                 props.childEdge,
                 props.showsChildren,
-                props.column
+                props.column,
+                props.bezierDescription
             );
 
             const beziers =

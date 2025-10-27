@@ -28,6 +28,7 @@ export interface PertChartContainerProps {
     lineStyle: string;
     boxContent: ListWidgetValue;
     dataMicroflowEdge: ListValue;
+    bezierDescription?: ListAttributeValue<string | boolean | Big | Date>;
     parentEdge: ListAttributeValue<string>;
     childEdge: ListAttributeValue<string>;
     column: ListAttributeValue<Big>;
@@ -56,6 +57,7 @@ export interface PertChartPreviewProps {
     lineStyle: string;
     boxContent: { widgetCount: number; renderer: ComponentType<{ children: ReactNode; caption?: string }> };
     dataMicroflowEdge: {} | { caption: string } | { type: string } | null;
+    bezierDescription: string;
     parentEdge: string;
     childEdge: string;
     column: string;
